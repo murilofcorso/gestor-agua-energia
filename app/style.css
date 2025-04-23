@@ -1,0 +1,110 @@
+* {
+    margin: 0;
+    box-sizing: border-box;
+    font-family: "Roboto Mono";
+    font-weight: 300;
+}
+
+body {
+    color: white;
+}
+
+a {
+    text-decoration: none;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#background {
+    height: 100vh;
+    background: linear-gradient(180deg, rgba(45, 46, 71, 1), rgba(47, 108, 130, 1) 100%);
+}
+
+#cadastro {
+    display: flex;
+    flex-direction: column;
+    margin-top: 25px;
+}
+
+#cadastro input {
+    height: 60px;
+    width: 500px;
+    margin-top: 10px;
+    margin-bottom: 30px;
+    font-size: large;
+    padding-left: 8px;
+    border-radius: 5px;
+    border: none;
+}
+
+#cadastro input:focus {
+    outline: none;
+}
+
+button {
+    background-color: #00bab4;
+    border: none;
+    border-radius: 5px;
+    height: 60px;
+    width: 300px;
+    align-self: center;
+    font-size: large;
+    color: white;
+}
+
+#graficos {
+    display: flex;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.moldura-grafico {
+    display: flex;
+    flex-direction: column;
+    width: 800px;
+    height: 400px;
+    align-items: center;
+    justify-content: center;
+    background-color: #2d2e47;
+    border-radius: 25px;
+}
+
+svg {
+    height: 300px;
+    width: 750px;
+}
+
+form {
+    height: 20px;
+}
+
+.radio {
+    display: none;
+}
+
+
+
+
+
+
+
+
+#dicas {
+    background-color: rgba(45, 46, 71, 1);
+    margin-top: 40px;
+    height: 30vh;
+    width: 60vw;
+    border-radius: 25px;
+}

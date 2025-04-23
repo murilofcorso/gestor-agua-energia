@@ -19,71 +19,64 @@
             <h2 style="font-size: 20px;">Gestor de água e energia</h2>
         </div>
 
-
-
         <div id="graficos">
-            <div class="moldura-grafico">
-                <svg class="svg-grafico-energia" width="95%" height="100%"></svg>
+            <div>
+                <div class="moldura-grafico">
+                    <h3>Histórico de consumo de energia</h3>
+                    <svg class="svg-grafico-energia" width="95%" height="100%"></svg>
+                    <form action="selecionar-grafico-energia">
+                        <p>Comparar com:</p>
+                        
+                        <input class="radio" type="radio" id="ninguem-energia" name="seletor-grafico-energia" value="ninguem" checked>
+                        <label class="botao-comparar" for="ninguem-energia"></label>
+                        <p>Ninguém</p>
+    
+                        <input class="radio" type="radio" id="media-usuarios-energia" name="seletor-grafico-energia" value="media-usuarios">
+                        <label class="botao-comparar" for="media-usuarios-energia"></label>
+                        <p>Média dos usuários</p>
+    
+                        <input class="radio" type="radio" id="metas-sustentaveis-energia" name="seletor-grafico-energia" value="metas-sustentaveis">
+                        <label class="botao-comparar" for="metas-sustentaveis-energia"></label>
+                        <p>Metas sustentáveis</p>
+                    </form>
+                </div>
+                <div class="container-adicionar-conta">
+                    <p>Adicionar conta de energia</p>
+                    <button class="adicionar-conta"></button>
+                </div>
             </div>
 
-            <div class="moldura-grafico">
-                <h3>Histórico de consumo de água</h3>
-                <svg class="svg-grafico-agua" width="750px" height="350px"></svg>
-                <form action="selecionar-grafico-agua">
-                    <input class="radio" type="radio" id="ninguem" name="seletor-grafico" value="ninguem">
-                    <label for="ninguem">aaa</label>
-                </form>
+            <div>
+                <div class="moldura-grafico">
+                    <h3>Histórico de consumo de água</h3>
+                    <svg class="svg-grafico-agua" width="750px" height="350px"></svg>
+                    <form action="selecionar-grafico-agua">
+                        <p>Comparar com:</p>
+                        
+                        <input class="radio" type="radio" id="ninguem-agua" name="seletor-grafico-agua" value="ninguem" checked>
+                        <label class="botao-comparar" for="ninguem-agua"></label>
+                        <p>Ninguém</p>
+    
+                        <input class="radio" type="radio" id="media-usuarios-agua" name="seletor-grafico-agua" value="media-usuarios">
+                        <label class="botao-comparar" for="media-usuarios-agua"></label>
+                        <p>Média dos usuários</p>
+    
+                        <input class="radio" type="radio" id="metas-sustentaveis-agua" name="seletor-grafico-agua" value="metas-sustentaveis">
+                        <label class="botao-comparar" for="metas-sustentaveis-agua"></label>
+                        <p>Metas sustentáveis</p>
+                    </form>
+                </div>
+                <div class="container-adicionar-conta">
+                    <p>Adicionar conta de água</p>
+                    <button class="adicionar-conta"></button>
+                </div>
             </div>
         </div>
-
-
-
-
-
-        <!-- <div id="graficos">
-            <div class="grafico">
-                <h3>Histórico de consumo de energia</h3>
-                <svg class="svg-grafico-energia" width="92%" height="100%"></svg>
-                <form action="selecionar-grafico-energia">
-                    <label for="">Comparar com:</label>
-                    <div>
-                        <input class="radio" type="radio" id="ninguem" name="seletor-grafico" value="Ninguem">
-                        <label for="html">Ninguém</label>
-                    </div>
-                    <div>
-                        <input class="radio" type="radio" id="media-usuarios" name="seletor-grafico" value="media-usuarios">
-                        <label for="css">Média dos usuários</label>
-                    </div>
-                    <div>
-                        <input class="radio" type="radio" id="metas-sustentaveis" name="seletor-grafico" value="metas-sustentaveis">
-                        <label for="javascript">Metas sustentáveis</label>
-                    </div>
-                </form>
-            </div>
-            <div class="grafico">
-                <h3>Histórico de consumo de água</h3>
-                <svg class="svg-grafico-agua" width="92%" height="100%"></svg>
-                <form action="selecionar-grafico-agua">
-                    <label for="">Comparar com:</label>
-
-                    <input type="radio" id="op1" name="option" class="radio-hidden">
-                    <label for="op1" class="radio-button">Ninguém</label>
-                    
-                    <input type="radio" id="op2" name="option" class="radio-hidden">
-                    <label for="op2" class="radio-button">Média dos usuários</label>
-
-                    <input type="radio" id="op3" name="option" class="radio-hidden">
-                    <label for="op3" class="radio-button">Metas sustentáveis</label>
-                    
-                </form>
-            </div>
-        </div> -->
 
         <div id="dicas">
             
         </div>
     </div>
-
 </body>
 
 <script src="https://d3js.org/d3.v7.min.js"></script>

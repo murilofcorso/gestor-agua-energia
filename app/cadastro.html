@@ -13,23 +13,27 @@
 <body>
 
     <div class="container" id="background"> 
-        <div class="container">
+        <div class="texto-topo">
             <h1 style="font-size: 36px;">Crie sua conta</h1>
             <h2 style="font-size: 20px;">Já possui uma conta? <a style="color: #00bab4;" href="">Entrar</a></h2>
         </div>
 
-        <img src="house-plants.png" style="width: 50px; margin-top: 20px; margin-bottom: -2px;">
-        <hr style="width:700px;">
+        <div class="imagem-topo">
+            <img src="house-plants.png" style="width: 50px; margin-top: 20px; margin-bottom: -2px;">
+            <hr style="width:700px; background-color:black; border: none;height: 1px">
+        </div>
 
         <form action="cadastrar_usuario" id="cadastro">
-            <label for="nome">Nome</label>
-            <input type="text">
+            <div class="div-texto">
+            <label for="nome" >Nome</label>
+            <input type="text" placeholder="Nome">
             <label for="email">Email</label>
-            <input type="text">
+            <input type="text"  placeholder="Email">
             <label for="senha">Senha</label>
-            <input type="password">
+            <input type="password" placeholder="Senha">
             <label for="data_nascimento">Data de nascimento</label>
             <input type="date">
+        </div>
             <button type="submit">Cadastrar</button>
         </form>
     </div>

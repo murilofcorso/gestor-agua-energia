@@ -9,25 +9,36 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Jersey+15&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
 </head>
-<body>
-
-    <div class="container" id="background"> 
-        <div class="container">
-            <h1 style="font-size: 36px;">Entrar</h1>
-            <h2 style="font-size: 20px;">Realize o login para continuar</h2>
+<body id="background">
+    <div class="container"> 
+        <div class="texto-topo">
+            
+            <div>
+                <h1 style="font-size: 36px;">Entrar</h1>
+            </div>
+                <h2 style="font-size: 20px;">Realize o login para continuar</h2>
+                
+            <div class="imagem-topo">
+                <img src="house-plants.png" style="width: 50px; margin-top: 20px; margin-bottom: -2px;">
+                <hr style="width:700px; background-color:black; border: none;height: 1px">
+            </div>
         </div>
-
-        <img src="house-plants.png" style="width: 50px; margin-top: 20px; margin-bottom: -2px;">
-        <hr style="width:700px;">
-
         <form action="login" id="cadastro">
-            <label for="email">Email</label>
-            <input type="text">
-            <label for="senha">Senha</label>
-            <input type="password">
+            
+            <div class="div-texto">
+                <label class="texto-label" for="email">Email</label>
+                <input class="caixa-input" type="text" placeholder="usuario123@gmail.com">
+            </div>
+            <div class="div-texto">
+                <label class="texto-label" for="senha">Senha</label>
+                <input class="caixa-input" type="password" placeholder="******">
+            </div>
             <button type="submit">Entrar</button>
+            
         </form>
     </div>
-
+    <footer>
+        
+    </footer>
 </body>
 </html>

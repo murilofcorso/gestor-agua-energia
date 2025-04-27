@@ -6,6 +6,9 @@
 }
 
 body {
+    min-height: 100vh;
+    width: 100vw;
+    background: linear-gradient(180deg, rgba(45, 46, 71, 1), rgba(47, 108, 130, 1) 100%);
     color: white;
 }
 
@@ -27,24 +30,36 @@ a {
     align-items: center;
 }
 
-#background {
-    height: 100vh;
-    background: linear-gradient(180deg, rgba(45, 46, 71, 1), rgba(47, 108, 130, 1) 100%);
+/*Pagina Login */
+
+.texto-topo{
+    margin: 3rem 0 0 0;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.imagem-topo{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 1rem 0 1em 0;
+}
+
+.div-texto{
+    display: flex;
+    flex-direction: column;
+    margin: 0.5rem 0;
 }
 
 #cadastro {
     display: flex;
-    flex-direction: column;
-    margin-top: 25px;
+    flex-direction: column;   
 }
 
 #cadastro input {
-    height: 60px;
-    width: 500px;
-    margin-top: 10px;
-    margin-bottom: 30px;
-    font-size: large;
-    padding-left: 8px;
+    margin: 0.5rem 0 0.5rem 0;
+    padding: 0.5rem 2rem;
     border-radius: 5px;
     border: none;
 }
@@ -57,11 +72,12 @@ button {
     background-color: #00bab4;
     border: none;
     border-radius: 5px;
-    height: 60px;
-    width: 300px;
+    height: 3rem;
+    width: 15rem;
     align-self: center;
     font-size: large;
     color: white;
+    margin: 2rem;
 }
 
 #graficos {
@@ -87,11 +103,10 @@ svg {
 }
 
 form {
-    height: 20px;
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 10px;
+
 }
 
 .radio {

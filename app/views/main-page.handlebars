@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>main page</title>
+
+</head>
+<body>
+
+    <div class="container" id="background"> 
+        <div class="container">
+            <h1 style="font-size: 36px;">Seja bem vindo Murilo!</h1>
+            <h2 style="font-size: 20px;">Gestor de água e energia</h2>
+        </div>
+
+        <div id="graficos">
+            <div>
+                <div class="moldura-grafico">
+                    <h3>Histórico de consumo de energia</h3>
+                    <svg class="svg-grafico-energia" width="95%" height="100%"></svg>
+                    <form action="selecionar-grafico-energia">
+                        <p>Comparar com:</p>
+                        
+                        <input class="radio" type="radio" id="ninguem-energia" name="seletor-grafico-energia" value="ninguem" checked>
+                        <label class="botao-comparar" for="ninguem-energia"></label>
+                        <p>Ninguém</p>
+    
+                        <input class="radio" type="radio" id="media-usuarios-energia" name="seletor-grafico-energia" value="media-usuarios">
+                        <label class="botao-comparar" for="media-usuarios-energia"></label>
+                        <p>Média dos usuários</p>
+    
+                        <input class="radio" type="radio" id="metas-sustentaveis-energia" name="seletor-grafico-energia" value="metas-sustentaveis">
+                        <label class="botao-comparar" for="metas-sustentaveis-energia"></label>
+                        <p>Metas sustentáveis</p>
+                    </form>
+                </div>
+                <div class="container-adicionar-conta">
+                    <p>Adicionar conta de energia</p>
+                    <button class="adicionar-conta"></button>
+                </div>
+            </div>
+
+            <div>
+                <div class="moldura-grafico">
+                    <h3>Histórico de consumo de água</h3>
+                    <svg class="svg-grafico-agua" width="750px" height="350px"></svg>
+                    <form action="selecionar-grafico-agua">
+                        <p>Comparar com:</p>
+                        
+                        <input class="radio" type="radio" id="ninguem-agua" name="seletor-grafico-agua" value="ninguem" checked>
+                        <label class="botao-comparar" for="ninguem-agua"></label>
+                        <p>Ninguém</p>
+    
+                        <input class="radio" type="radio" id="media-usuarios-agua" name="seletor-grafico-agua" value="media-usuarios">
+                        <label class="botao-comparar" for="media-usuarios-agua"></label>
+                        <p>Média dos usuários</p>
+    
+                        <input class="radio" type="radio" id="metas-sustentaveis-agua" name="seletor-grafico-agua" value="metas-sustentaveis">
+                        <label class="botao-comparar" for="metas-sustentaveis-agua"></label>
+                        <p>Metas sustentáveis</p>
+                    </form>
+                </div>
+                <div class="container-adicionar-conta">
+                    <p>Adicionar conta de água</p>
+                    <button class="adicionar-conta"></button>
+                </div>
+            </div>
+        </div>
+
+        <div id="dicas">
+            
+        </div>
+    </div>
+</body>
+
+</html>

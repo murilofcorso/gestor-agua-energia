@@ -7,14 +7,16 @@
 
 </head>
 <body>
-
+    {{!-- HEADER --}}
     <div class="container" id="background"> 
         <div class="container">
             <h1 style="font-size: 36px;">Seja bem vindo Murilo!</h1>
             <h2 style="font-size: 20px;">Gestor de água e energia</h2>
         </div>
 
+        {{!-- GRÁFICOS --}}
         <div id="graficos">
+            {{!-- ENERGIA --}}
             <div>
                 <div class="moldura-grafico">
                     <h3>Histórico de consumo de energia</h3>
@@ -37,10 +39,10 @@
                 </div>
                 <div class="container-adicionar-conta">
                     <p>Adicionar conta de energia</p>
-                    <button class="adicionar-conta"></button>
+                    <button onclick="abrirModalEnergia()" class="adicionar-conta"></button>
                 </div>
             </div>
-
+            {{!-- ÁGUA --}}
             <div>
                 <div class="moldura-grafico">
                     <h3>Histórico de consumo de água</h3>
@@ -63,18 +65,112 @@
                 </div>
                 <div class="container-adicionar-conta">
                     <p>Adicionar conta de água</p>
-                    <button class="adicionar-conta"></button>
+                    <button onclick="abrirModalAgua()" class="adicionar-conta"></button>
                 </div>
             </div>
         </div>
 
+        {{!-- DICAS --}}
         <div id="dicas">
             <h3>Dicas para economizar</h3>
             <div>
-                <p>adsa</p>
+                <p>---------</p>
             </div>
         </div>
     </div>
+
+    <!-- MODAL -->
+    <div id="meuModalAgua" class="modal">
+        <div class="modal-conteudo">
+            <h2>Adicionar conta de água</h2>
+            <form id="form-agua" class="form-nova-conta" action="">
+                <div>
+                    <label for="data">Data: </label>
+                    <input type="month" name="data" class="seletor-mes">
+                </div>
+                <div>
+                    <label for="consumo">Consumo: </label>
+                    <input type="text" name="consumo">
+                </div>
+                <button type="submit">Enviar</button>
+            </form>
+
+            <button class="voltar-button" onclick="fecharModalAgua()">Voltar</button>
+        </div>
+    </div>
+
+    <div id="meuModalEnergia" class="modal">
+        <div class="modal-conteudo">
+            <h2>Adicionar conta de água</h2>
+            <form id="form-energia" class="form-nova-conta" action="">
+                <div>
+                    <label for="data">Data: </label>
+                    <input type="month" name="data" class="seletor-mes">
+                </div>
+                <div>
+                    <label for="consumo">Consumo: </label>
+                    <input type="text" name="consumo">
+                </div>
+                <button type="submit">Enviar</button>
+            </form>
+
+            <button class="voltar-button" onclick="fecharModalEnergia()">Voltar</button>
+        </div>
+    </div>
+
+    <script>
+        function abrirModalAgua() {
+            document.getElementById("meuModalAgua").style.display = "block";
+        }
+
+        function abrirModalEnergia() {
+            document.getElementById("meuModalEnergia").style.display = "block";
+        }
+
+        function fecharModalAgua() {
+            document.getElementById("meuModalAgua").style.display = "none";
+        }
+
+        function fecharModalEnergia() {
+            document.getElementById("meuModalEnergia").style.display = "none";
+        }
+
+        const formAgua = document.getElementById('form-agua');
+        formAgua.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const dados = {
+                data: formAgua.data.value,
+                consumo: formAgua.consumo.value
+            };
+
+            await fetch('/salvar-conta-agua', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(dados)
+            });
+            alert('Dados enviados!');
+        });
+
+        const formEnergia = document.getElementById('form-energia');
+        formEnergia.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const dados = {
+                data: formEnergia.data.value,
+                consumo: formEnergia.consumo.value
+            };
+
+            await fetch('/salvar-conta-energia', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(dados)
+            });
+            alert('Dados enviados!');
+        });
+    </script>
 </body>
 
 </html>

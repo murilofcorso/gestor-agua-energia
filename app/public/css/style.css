@@ -173,6 +173,7 @@ input[type="radio"]:checked + label {
     width: 400px;
     height: 400px;
     border-radius: 10px;
+    text-align: center;
 }
 
 .form-nova-conta {
@@ -202,6 +203,12 @@ input[type="radio"]:checked + label {
     outline: none;
 }
 
-.voltar-button {
-    margin-bottom: 0px;
+.form-nova-conta div button {
+    height: 30px;
+    width: 100px;
+    background-color: #00bab4;
+    outline: none;
+    border: none;
+    border-radius: 20px;
+    color: white;
 }

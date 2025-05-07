@@ -74,26 +74,37 @@ app.post('/adicionar-energia', (req, res) => {
     // Lê os dados existentes
     let dados = [];
     try {
-        const conteudo = fs.readFileSync(dadosPath);
+        const conteudo = fs.readFileSync(dadosPath, 'utf-8');
         dados = JSON.parse(conteudo);
     } catch (err) {
-        // Se o arquivo não existir ou estiver vazio
-        console.error('Erro ao ler dados:', err);
+        // Se o arquivo não existir ou estiver vazio, continua com array vazio
+        console.warn('Arquivo não encontrado ou inválido. Será criado.');
+    }
+
+    // Verifica duplicata
+    const existe = dados.some(d => d.tempo === novoDado.tempo);
+    if (existe) {
+        return res.status(400).json({ erro: 'Já existe um registro para esse mês.' });
     }
 
     // Adiciona o novo dado
     dados.push(novoDado);
 
     // Salva de volta
-    fs.writeFileSync(dadosPath, JSON.stringify(dados, null, 2));
-
-    res.json({ sucesso: true });
+    try {
+        fs.writeFileSync(dadosPath, JSON.stringify(dados, null, 2));
+        res.json({ sucesso: true });
+    } catch (err) {
+        console.error('Erro ao salvar:', err);
+        res.status(500).json({ erro: 'Erro ao salvar os dados' });
+    }
 });
 
 
 app.post('/adicionar-agua', (req, res) => {
     const dadosPath = path.join(__dirname, 'dados-agua.json');
     const novoDado = req.body;
+
     // Verificação básica
     if (!novoDado.tempo || !novoDado.consumo) {
         return res.status(400).json({ erro: 'Dados inválidos' });
@@ -102,18 +113,28 @@ app.post('/adicionar-agua', (req, res) => {
     // Lê os dados existentes
     let dados = [];
     try {
-        const conteudo = fs.readFileSync(dadosPath);
+        const conteudo = fs.readFileSync(dadosPath, 'utf-8');
         dados = JSON.parse(conteudo);
     } catch (err) {
-        // Se o arquivo não existir ou estiver vazio
-        console.error('Erro ao ler dados:', err);
+        // Se o arquivo não existir ou estiver vazio, continua com array vazio
+        console.warn('Arquivo não encontrado ou inválido. Será criado.');
+    }
+
+    // Verifica duplicata
+    const existe = dados.some(d => d.tempo === novoDado.tempo);
+    if (existe) {
+        return res.status(400).json({ erro: 'Já existe um registro para esse mês.' });
     }
 
     // Adiciona o novo dado
     dados.push(novoDado);
 
     // Salva de volta
-    fs.writeFileSync(dadosPath, JSON.stringify(dados, null, 2));
-
-    res.json({ sucesso: true });
+    try {
+        fs.writeFileSync(dadosPath, JSON.stringify(dados, null, 2));
+        res.json({ sucesso: true });
+    } catch (err) {
+        console.error('Erro ao salvar:', err);
+        res.status(500).json({ erro: 'Erro ao salvar os dados' });
+    }
 });

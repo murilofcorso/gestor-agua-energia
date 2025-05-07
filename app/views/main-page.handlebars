@@ -188,7 +188,7 @@
             <form id="form-agua" class="form-nova-conta" action="">
                 <div>
                     <label for="tempo">Data: </label>
-                    <input type="month" name="tempo-agua" class="seletor-mes">
+                    <input id="seletor-mes-agua" type="month" name="tempo-agua" class="seletor-mes">
                 </div>
                 <div>
                     <label for="consumo">Consumo: </label>
@@ -208,7 +208,8 @@
             <form id="form-energia" class="form-nova-conta" action="">
                 <div>
                     <label for="tempo">Data: </label>
-                    <input type="month" name="tempo-energia" class="seletor-mes">
+                    <input id="seletor-mes-energia" type="month" name="tempo-energia" class="seletor-mes">
+                    
                 </div>
                 <div>
                     <label for="consumo">Consumo: </label>
@@ -237,6 +238,12 @@
 
         function fecharModalEnergia() {
             document.getElementById("meuModalEnergia").style.display = "none";
+        }
+
+        function getMesAnoFormatado(date) {
+            const ano = date.getFullYear();
+            const mes = String(date.getMonth() + 1).padStart(2, '0');
+            return `${ano}-${mes}`;
         }
     </script>
 
@@ -311,6 +318,30 @@
                 alert('Erro ao salvar os dados.');
                 console.error(err);
             });
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const inputMes = document.getElementById('seletor-mes-agua');
+
+            const hoje = new Date();
+            const cincoMesesAtras = new Date();
+            cincoMesesAtras.setMonth(hoje.getMonth() - 5);
+
+            inputMes.min = getMesAnoFormatado(cincoMesesAtras);
+            inputMes.max = getMesAnoFormatado(hoje);
+        });                       
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const inputMes = document.getElementById('seletor-mes-energia');
+
+            const hoje = new Date();
+            const cincoMesesAtras = new Date();
+            cincoMesesAtras.setMonth(hoje.getMonth() - 5);
+
+            inputMes.min = getMesAnoFormatado(cincoMesesAtras);
+            inputMes.max = getMesAnoFormatado(hoje);
         });
     </script>
 </body>

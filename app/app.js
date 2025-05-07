@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('path');
 const exphbs = require('express-handlebars');
 const fs = require('fs');
 
@@ -46,24 +47,73 @@ app.post('/salvar-conta-agua', (req, res) => {
     res.send('Salvo com sucesso!');
 });
 
-// Rota adicionar conta de energia
-app.post('/salvar-conta-energia', (req, res) => {
+app.get('/dados-energia', (req, res) => {
+    const dados = fs.readFileSync('dados-energia.json');
+    res.json(JSON.parse(dados));
+  });
+
+
+app.get('/dados-agua', (req, res) => {
+    const dados = fs.readFileSync('dados-agua.json');
+    res.json(JSON.parse(dados));
+});
+
+const bodyParser = require('body-parser');
+app.use(bodyParser.json()); // Para ler JSON do body
+
+
+app.post('/adicionar-energia', (req, res) => {
+    const dadosPath = path.join(__dirname, 'dados-energia.json');
     const novoDado = req.body;
 
-    let dados = [];
-    if (fs.existsSync('dados-energia.json')) {
-        const conteudo = fs.readFileSync('dados-energia.json', 'utf-8');
-        const json = JSON.parse(conteudo);
-        dados = Array.isArray(json) ? json : [];
+    // Verificação básica
+    if (!novoDado.tempo || !novoDado.consumo) {
+        return res.status(400).json({ erro: 'Dados inválidos' });
     }
+
+    // Lê os dados existentes
+    let dados = [];
+    try {
+        const conteudo = fs.readFileSync(dadosPath);
+        dados = JSON.parse(conteudo);
+    } catch (err) {
+        // Se o arquivo não existir ou estiver vazio
+        console.error('Erro ao ler dados:', err);
+    }
+
+    // Adiciona o novo dado
     dados.push(novoDado);
-    console.log(dados);
 
+    // Salva de volta
+    fs.writeFileSync(dadosPath, JSON.stringify(dados, null, 2));
 
-    fs.writeFileSync('dados-energia.json', JSON.stringify(dados , null, 2));
-    res.json(dados)
-    res.send('Salvo com sucesso!');
+    res.json({ sucesso: true });
 });
 
 
+app.post('/adicionar-agua', (req, res) => {
+    const dadosPath = path.join(__dirname, 'dados-agua.json');
+    const novoDado = req.body;
+    // Verificação básica
+    if (!novoDado.tempo || !novoDado.consumo) {
+        return res.status(400).json({ erro: 'Dados inválidos' });
+    }
 
+    // Lê os dados existentes
+    let dados = [];
+    try {
+        const conteudo = fs.readFileSync(dadosPath);
+        dados = JSON.parse(conteudo);
+    } catch (err) {
+        // Se o arquivo não existir ou estiver vazio
+        console.error('Erro ao ler dados:', err);
+    }
+
+    // Adiciona o novo dado
+    dados.push(novoDado);
+
+    // Salva de volta
+    fs.writeFileSync(dadosPath, JSON.stringify(dados, null, 2));
+
+    res.json({ sucesso: true });
+});

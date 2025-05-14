@@ -2,10 +2,17 @@ const express = require('express');
 const path = require('path');
 const exphbs = require('express-handlebars');
 const fs = require('fs');
-
+const db = require('./db');
 const app = express();
 const PORT = 3000;
 
+const bodyParser = require('body-parser');
+app.use(bodyParser.json()); // Para ler JSON do body
+
+
+// Configs
+app.use(express.static('public'));
+app.use(express.json());
 // Configuração do Handlebars
 app.engine('handlebars', exphbs.engine({
   defaultLayout: 'main',
@@ -14,9 +21,8 @@ app.engine('handlebars', exphbs.engine({
 app.set('view engine', 'handlebars');
 app.set('views', __dirname + '/views');
 
-// Configs
-app.use(express.static('public'));
-app.use(express.json());
+
+
 
 // Inicia o servidor
 app.listen(PORT, () => {
@@ -24,9 +30,16 @@ app.listen(PORT, () => {
 });
 
 // Rota principal
-app.get('/', (req, res) => {
-  res.render('main-page', {});
-});
+app.get('/', async (req, res) => {
+    try {
+      const [rows] = await db.query('SELECT * FROM sua_tabela');
+      res.render('home', { dados: rows });
+    } catch (err) {
+      console.error(err);
+      res.status(500).send('Erro no banco de dados');
+    }
+  });
+
 
 // Rota adicionar conta de agua
 app.post('/salvar-conta-agua', (req, res) => {
@@ -57,10 +70,6 @@ app.get('/dados-agua', (req, res) => {
     const dados = fs.readFileSync('dados-agua.json');
     res.json(JSON.parse(dados));
 });
-
-const bodyParser = require('body-parser');
-app.use(bodyParser.json()); // Para ler JSON do body
-
 
 app.post('/adicionar-energia', (req, res) => {
     const dadosPath = path.join(__dirname, 'dados-energia.json');

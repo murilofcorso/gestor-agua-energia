@@ -33,7 +33,7 @@ app.listen(PORT, () => {
 app.get('/', async (req, res) => {
     try {
       const [rows] = await db.query('SELECT * FROM sua_tabela');
-      res.render('home', { dados: rows });
+      res.render('login', { dados: rows });
     } catch (err) {
       console.error(err);
       res.status(500).send('Erro no banco de dados');
@@ -146,4 +146,52 @@ app.post('/adicionar-agua', (req, res) => {
         console.error('Erro ao salvar:', err);
         res.status(500).json({ erro: 'Erro ao salvar os dados' });
     }
+});
+
+//cadastro usuario
+
+const urlencodedParser = bodyParser.urlencoded({ extended: false });
+
+app.post('/cadastrar_usuario', urlencodedParser, async (req, res) => {
+  const { nome, email, senha, data_nascimento } = req.body;
+
+  try {
+    const [resultado] = await db.query(
+      'INSERT INTO usuarios (nome, email, senha, data_nascimento) VALUES (?, ?, ?, ?)',
+      [nome, email, senha, data_nascimento]
+    );
+    console.log('Usuário cadastrado com ID:', resultado.insertId);
+    res.render('main-page'); 
+  } catch (err) {
+    console.error('Erro ao cadastrar usuário:', err);
+    res.status(500).send('Erro ao cadastrar usuário.');
+  }
+});
+
+//login usuario
+
+
+app.post('/login', urlencodedParser, async (req, res) => {
+  const { email, senha } = req.body;
+
+  try {
+    const [rows] = await db.query('SELECT * FROM usuarios WHERE email = ?', [email]);
+
+    if (rows.length === 0) {
+        res.status(500).render('login', { erro: 'Erro no servidor. Tente novamente.' });
+    }
+
+    const usuario = rows[0];
+
+    // Caso esteja usando senha em texto puro (sem hash, por enquanto)
+    if (senha !== usuario.senha) {
+      
+    }
+
+    // Login OK → redireciona para main-page
+    res.render('main-page', { usuario });  // você pode passar dados do usuário para a view se quiser
+  } catch (err) {
+    console.error(err);
+    
+  }
 });

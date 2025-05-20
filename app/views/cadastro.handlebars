@@ -21,17 +21,21 @@
         <img src="house-plants.png" style="width: 50px; margin-top: 20px; margin-bottom: -2px;">
         <hr style="width:700px;">
 
-        <form action="cadastrar_usuario" id="cadastro">
+        <form action="/cadastrar_usuario" id="cadastro" method="POST">
             <label for="nome">Nome</label>
-            <input type="text">
+            <input type="text" name="nome" required>
+
             <label for="email">Email</label>
-            <input type="text">
+            <input type="email" name="email" required>
+
             <label for="senha">Senha</label>
-            <input type="password">
+            <input type="password" name="senha" required>
+
             <label for="data_nascimento">Data de nascimento</label>
-            <input type="date">
+            <input type="date" name="data_nascimento" required>
+
             <button type="submit">Cadastrar</button>
-        </form>
+            </form>
     </div>
 
 </body>

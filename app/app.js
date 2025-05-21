@@ -47,6 +47,26 @@ app.get('/', (req, res) => {
     res.render('login', {});
 });
 
+app.get('/cadastro', (req, res) => {
+    res.render('cadastro', {});
+});
+
+app.get('/login', (req, res) => {
+    res.render('login', {});
+});
+
+app.get('/logout', (req, res) => {
+    req.session.destroy(err => {
+        if (err) {
+            console.error('Erro ao encerrar a sessão:', err);
+            return res.status(500).send('Erro ao fazer logout.');
+        }
+
+        // Redireciona para a página de login após logout
+        res.redirect('/');
+    });
+});
+
 app.get('/main-page', (req, res) => {
     res.render('main-page', {});
 });
@@ -118,6 +138,7 @@ app.post('/cadastrar', async (req, res) => {
 
     try {
         const [result] = await db.execute('INSERT INTO usuarios (email, senha, username) VALUES (?, ?, ?)', [email, senha, nome]);
+        res.redirect('login');
 
         // result.insertId contém o id do registro inserido
         res.status(201).json({ mensagem: 'Usuário criado com sucesso', id: result.insertId });

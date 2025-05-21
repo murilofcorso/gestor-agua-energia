@@ -9,30 +9,92 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Jersey+15&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
     <script src="script.js"></script>
+    <style>
+        #background {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #cadastro {
+            margin-top: 100px;
+        }
+
+        #cadastro form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        #cadastro input {
+            height: 60px;
+            width: 500px;
+            margin-top: 10px;
+            margin-bottom: 30px;
+            font-size: large;
+            padding-left: 8px;
+            border-radius: 5px;
+            border: none;
+        }
+
+        #cadastro input:focus {
+            outline: none;
+        }
+
+        button {
+            background-color: #00bab4;
+            border: none;
+            border-radius: 5px;
+            height: 60px;
+            width: 300px;
+            align-self: center;
+            font-size: large;
+            color: white;
+        }
+    </style>
 </head>
 <body>
 
     <div class="container" id="background"> 
-        <div class="container">
+        <div id="header">
             <h1 style="font-size: 36px;">Crie sua conta</h1>
-            <h2 style="font-size: 20px;">Já possui uma conta? <a style="color: #00bab4;" href="">Entrar</a></h2>
+            <h2 style="font-size: 20px;">Já possui uma conta? <a style="color: #00bab4;" href="login">Entrar</a></h2>
+            <img src="/img/house-plants.png" style="width: 50px; margin-top: 20px; margin-bottom: -2px;">
+            <hr style="width:700px;">
         </div>
 
-        <img src="house-plants.png" style="width: 50px; margin-top: 20px; margin-bottom: -2px;">
-        <hr style="width:700px;">
 
-        <form action="cadastrar" id="cadastro" method="POST">
-            <label for="nome">Nome</label>
-            <input type="text" name="nome">
-            <label for="email">Email</label>
-            <input type="text" name="email">
-            <label for="senha">Senha</label>
-            <input type="password" name="senha">
-            <label for="data_nascimento">Data de nascimento</label>
-            <input type="date" name="nascimento">
-            <button type="submit">Cadastrar</button>
-        </form>
+        <div id="cadastro">
+            <form action="cadastrar" id="cadastro" method="POST">
+                <label for="nome">Nome</label>
+                <input type="text" name="nome">
+                <label for="email">Email</label>
+                <input type="text" name="email">
+                <label for="senha">Senha</label>
+                <input type="password" name="senha">
+                <label for="data_nascimento">Data de nascimento</label>
+                <input type="date" name="nascimento">
+                <button type="submit">Cadastrar</button>
+            </form>
+        </div>
     </div>
 
 </body>
 </html>
+
+
+{{!-- <div id="login">
+    <form action="login" method="POST">
+        <label for="email">Email</label>
+        <input type="text" name="email">
+        <label for="senha">Senha</label>
+        <input type="password" name="senha">
+        <button type="submit">Entrar</button>
+    </form>
+</div> --}}

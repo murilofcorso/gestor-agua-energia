@@ -12,7 +12,10 @@
   "dependencies": {
     "express": "^5.1.0",
     "express-handlebars": "^8.0.3",
+<<<<<<< HEAD
     "express-session": "^1.18.1",
+=======
+>>>>>>> a747c6a454e1644e511849a5b13ee42d81def2bd
     "mysql2": "^3.14.1"
   }
 }

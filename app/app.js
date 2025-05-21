@@ -11,6 +11,13 @@ const session = require('express-session');
 const app = express();
 const PORT = 3000;
 
+const bodyParser = require('body-parser');
+app.use(bodyParser.json()); // Para ler JSON do body
+
+
+// Configs
+app.use(express.static('public'));
+app.use(express.json());
 // Configuração do Handlebars
 app.engine('handlebars', exphbs.engine({
   defaultLayout: 'main',

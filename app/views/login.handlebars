@@ -8,25 +8,65 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Jersey+15&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
+    <style>
+        #background {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #login {
+            margin-top: 100px;
+        }
+
+        #login form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        #login input {
+            height: 60px;
+            width: 500px;
+            margin-top: 10px;
+            margin-bottom: 30px;
+            font-size: large;
+            padding-left: 8px;
+            border-radius: 5px;
+            border: none;
+        }
+
+        #login input:focus {
+            outline: none;
+        }
+    </style>
 </head>
 <body>
 
-    <div class="container" id="background"> 
-        <div class="container">
+    <div id="background"> 
+        <div id="header">
             <h1 style="font-size: 36px;">Entrar</h1>
             <h2 style="font-size: 20px;">Realize o login para continuar</h2>
+            <img src="/img/house-plants.png" style="width: 50px; margin-top: 20px; margin-bottom: -2px;">
+            <hr style="width:700px;">
         </div>
 
-        <img src="house-plants.png" style="width: 50px; margin-top: 20px; margin-bottom: -2px;">
-        <hr style="width:700px;">
-
-        <form action="login" id="cadastro">
-            <label for="email">Email</label>
-            <input type="text">
-            <label for="senha">Senha</label>
-            <input type="password">
-            <button type="submit">Entrar</button>
-        </form>
+        
+        <div id="login">
+            <form action="login" method="POST">
+                <label for="email">Email</label>
+                <input type="text" name="email">
+                <label for="senha">Senha</label>
+                <input type="password" name="senha">
+                <button type="submit">Entrar</button>
+            </form>
+        </div>
     </div>
 
 </body>

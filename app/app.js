@@ -2,6 +2,11 @@ const express = require('express');
 const path = require('path');
 const exphbs = require('express-handlebars');
 const fs = require('fs');
+const db = require('./db');
+const { error } = require('console');
+const session = require('express-session');
+
+
 
 const app = express();
 const PORT = 3000;
@@ -16,7 +21,14 @@ app.set('views', __dirname + '/views');
 
 // Configs
 app.use(express.static('public'));
-app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+app.use(session({
+    secret: 'chave-secreta', // coloque algo mais seguro em produção
+    resave: false,
+    saveUninitialized: false
+}));
+
 
 // Inicia o servidor
 app.listen(PORT, () => {
@@ -25,116 +37,162 @@ app.listen(PORT, () => {
 
 // Rota principal
 app.get('/', (req, res) => {
-  res.render('main-page', {});
+    res.render('login', {});
 });
 
-// Rota adicionar conta de agua
-app.post('/salvar-conta-agua', (req, res) => {
-    const novoDado = req.body;
-
-    let dados = [];
-    if (fs.existsSync('dados-agua.json')) {
-        const conteudo = fs.readFileSync('dados-agua.json', 'utf-8');
-        const json = JSON.parse(conteudo);
-        dados = Array.isArray(json) ? json : [];
-    }
-    dados.push(novoDado);
-    console.log(dados);
-
-
-    fs.writeFileSync('dados-agua.json', JSON.stringify(dados , null, 2));
-    res.json(dados)
-    res.send('Salvo com sucesso!');
+app.get('/main-page', (req, res) => {
+    res.render('main-page', {});
 });
 
-app.get('/dados-energia', (req, res) => {
-    const dados = fs.readFileSync('dados-energia.json');
-    res.json(JSON.parse(dados));
-  });
+app.get('/dados-energia', async (req, res) => {
+    const idUsuario = req.session.idUsuario;
 
-
-app.get('/dados-agua', (req, res) => {
-    const dados = fs.readFileSync('dados-agua.json');
-    res.json(JSON.parse(dados));
-});
-
-const bodyParser = require('body-parser');
-app.use(bodyParser.json()); // Para ler JSON do body
-
-
-app.post('/adicionar-energia', (req, res) => {
-    const dadosPath = path.join(__dirname, 'dados-energia.json');
-    const novoDado = req.body;
-
-    // Verificação básica
-    if (!novoDado.tempo || !novoDado.consumo) {
-        return res.status(400).json({ erro: 'Dados inválidos' });
+    if (!idUsuario) {
+        return res.status(401).json({ erro: 'Não autenticado' });
     }
 
-    // Lê os dados existentes
-    let dados = [];
     try {
-        const conteudo = fs.readFileSync(dadosPath, 'utf-8');
-        dados = JSON.parse(conteudo);
+        const [rows] = await db.execute(
+            'SELECT mes, consumo FROM contas_de_energia WHERE id_usuario = ? ORDER BY mes',
+            [idUsuario]
+        );
+        console.log(rows)
+
+        // Se tempo estiver no formato DATE, formatar para "YYYY-MM"
+        const dados = rows.map(r => ({
+            tempo: r.mes.toISOString().slice(0, 7), // para DATE
+            consumo: r.consumo
+        }));
+
+        res.json(dados);
+
     } catch (err) {
-        // Se o arquivo não existir ou estiver vazio, continua com array vazio
-        console.warn('Arquivo não encontrado ou inválido. Será criado.');
+        console.error(err);
+        res.status(500).json({ erro: 'Erro ao obter dados de energia' });
+    }
+});
+
+app.get('/dados-agua', async (req, res) => {
+    const idUsuario = req.session.idUsuario;
+
+    if (!idUsuario) {
+        return res.status(401).json({ erro: 'Não autenticado' });
     }
 
-    // Verifica duplicata
-    const existe = dados.some(d => d.tempo === novoDado.tempo);
-    if (existe) {
-        return res.status(400).json({ erro: 'Já existe um registro para esse mês.' });
-    }
-
-    // Adiciona o novo dado
-    dados.push(novoDado);
-
-    // Salva de volta
     try {
-        fs.writeFileSync(dadosPath, JSON.stringify(dados, null, 2));
-        res.json({ sucesso: true });
+        const [rows] = await db.execute(
+            'SELECT mes, consumo FROM contas_de_agua WHERE id_usuario = ? ORDER BY mes',
+            [idUsuario]
+        );
+        console.log(rows)
+
+        // Se tempo estiver no formato DATE, formatar para "YYYY-MM"
+        const dados = rows.map(r => ({
+            tempo: r.mes.toISOString().slice(0, 7), // para DATE
+            consumo: r.consumo
+        }));
+
+        res.json(dados);
+
     } catch (err) {
-        console.error('Erro ao salvar:', err);
-        res.status(500).json({ erro: 'Erro ao salvar os dados' });
+        console.error(err);
+        res.status(500).json({ erro: 'Erro ao obter dados de agua' });
     }
 });
 
 
-app.post('/adicionar-agua', (req, res) => {
-    const dadosPath = path.join(__dirname, 'dados-agua.json');
-    const novoDado = req.body;
+// Rota de cadastro de usuário
+app.post('/cadastrar', async (req, res) => {
+    const { email, senha, nome } = req.body;
 
-    // Verificação básica
-    if (!novoDado.tempo || !novoDado.consumo) {
-        return res.status(400).json({ erro: 'Dados inválidos' });
+    if (!email || !senha || !nome) {
+        return res.status(400).json({ erro: 'Todos os campos são obrigatórios' });
     }
 
-    // Lê os dados existentes
-    let dados = [];
     try {
-        const conteudo = fs.readFileSync(dadosPath, 'utf-8');
-        dados = JSON.parse(conteudo);
-    } catch (err) {
-        // Se o arquivo não existir ou estiver vazio, continua com array vazio
-        console.warn('Arquivo não encontrado ou inválido. Será criado.');
+        const [result] = await db.execute('INSERT INTO usuarios (email, senha, username) VALUES (?, ?, ?)', [email, senha, nome]);
+
+        // result.insertId contém o id do registro inserido
+        res.status(201).json({ mensagem: 'Usuário criado com sucesso', id: result.insertId });
+
+    } catch (error) {
+        console.error(error);
+
+        if (error.code === 'ER_DUP_ENTRY') {
+            return res.status(409).json({ erro: 'Email ou username já cadastrado' });
+        }
+
+        res.status(500).json({ erro: 'Erro interno no servidor' });
     }
+});
 
-    // Verifica duplicata
-    const existe = dados.some(d => d.tempo === novoDado.tempo);
-    if (existe) {
-        return res.status(400).json({ erro: 'Já existe um registro para esse mês.' });
-    }
+// Rota de login
+app.post('/login', async (req, res) => {
+    const email = req.body.email;
+    const senha = req.body.senha;
 
-    // Adiciona o novo dado
-    dados.push(novoDado);
-
-    // Salva de volta
     try {
-        fs.writeFileSync(dadosPath, JSON.stringify(dados, null, 2));
-        res.json({ sucesso: true });
+        const [rows] = await db.execute('SELECT * FROM usuarios WHERE email = ?', [email]);
+
+        if (rows.length === 0) {
+            return res.status(404).json({ erro: 'Usuário não encontrado' });
+        }
+
+        req.session.idUsuario = rows[0].id_usuario;
+        req.session.username = rows[0].username;
+        const senhaUsuario = rows[0].senha;
+
+        if (senha !== senhaUsuario) {
+            return res.status(401).json({ erro: 'Senha incorreta' });
+        }
+
+        // Login bem-sucedido
+        res.redirect('main-page')
+
     } catch (err) {
-        console.error('Erro ao salvar:', err);
-        res.status(500).json({ erro: 'Erro ao salvar os dados' });
+        console.error(err);
+        res.status(500).json({ erro: 'Erro no servidor' });
+    }
+});
+
+app.post('/adicionar-conta-agua', async (req, res) => {
+    const idUsuario = req.session.idUsuario;
+    const { mesAgua, consumoAgua } = req.body;
+    const dataCompleta = mesAgua + '-01';
+
+    if (!mesAgua || !consumoAgua) {
+        return res.status(400).send('Data e consumo são obrigatórios.');
+    }
+
+    try {
+        await db.execute(
+            'INSERT INTO contas_de_agua (id_usuario, mes, consumo) VALUES (?, ?, ?)',
+            [idUsuario, dataCompleta, consumoAgua]
+        );
+        res.redirect('main-page'); // Redireciona para a mesma página após envio
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Erro ao cadastrar conta de água.');
+    }
+});
+
+app.post('/adicionar-conta-energia', async (req, res) => {
+    const idUsuario = req.session.idUsuario;
+    const { mesEnergia, consumoEnergia } = req.body;
+    const dataCompleta = mesEnergia + '-01';
+
+    if (!mesEnergia || !consumoEnergia) {
+        return res.status(400).send('Data e consumo são obrigatórios.');
+    }
+
+    try {
+        await db.execute(
+            'INSERT INTO contas_de_energia (id_usuario, mes, consumo) VALUES (?, ?, ?)',
+            [idUsuario, dataCompleta, consumoEnergia]
+        );
+        res.redirect('main-page'); // Redireciona para a mesma página após envio
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Erro ao cadastrar conta de energia.');
     }
 });

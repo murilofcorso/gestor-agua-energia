@@ -25,51 +25,55 @@
                     <script src="https://d3js.org/d3.v7.min.js"></script>
                     <script>
                         document.addEventListener('DOMContentLoaded', () => {
-                        fetch('/dados-energia')
+                        fetch('/dados-energia', {credentials: 'include'})
                             .then(res => res.json())
                             .then(dados => {
-                            const svg = d3.select(".svg-grafico-energia");
-                            const width = parseInt(svg.style("width"));
-                            const height = parseInt(svg.style("height"));
-                            const margin = { top: 20, right: 30, bottom: 30, left: 40 };
-                            const innerWidth = width - margin.left - margin.right;
-                            const innerHeight = height - margin.top - margin.bottom;
+                                if (!Array.isArray(dados)) {
+                                    console.error("Erro ao carregar dados:", dados);
+                                    return;
+                                }
+                                const svg = d3.select(".svg-grafico-energia");
+                                const width = parseInt(svg.style("width"));
+                                const height = parseInt(svg.style("height"));
+                                const margin = { top: 20, right: 30, bottom: 30, left: 40 };
+                                const innerWidth = width - margin.left - margin.right;
+                                const innerHeight = height - margin.top - margin.bottom;
 
-                            const g = svg.append("g")
-                                .attr("transform", `translate(${margin.left},${margin.top})`);
+                                const g = svg.append("g")
+                                    .attr("transform", `translate(${margin.left},${margin.top})`);
 
-                            // Exemplo de estrutura: [{ tempo: "2024-01", consumo: 150 }, ...]
-                            const parseTime = d3.timeParse("%Y-%m");
-                            dados.forEach(d => {
-                                d.tempo = parseTime(d.tempo);
-                                d.consumo = +d.consumo;
-                            });
+                                // Exemplo de estrutura: [{ tempo: "2024-01", consumo: 150 }, ...]
+                                const parseTime = d3.timeParse("%Y-%m");
+                                dados.forEach(d => {
+                                    d.tempo = parseTime(d.tempo);
+                                    d.consumo = +d.consumo;
+                                });
 
-                            const x = d3.scaleTime()
-                                .domain(d3.extent(dados, d => d.tempo))
-                                .range([0, innerWidth]);
+                                const x = d3.scaleTime()
+                                    .domain(d3.extent(dados, d => d.tempo))
+                                    .range([0, innerWidth]);
 
-                            const y = d3.scaleLinear()
-                                .domain([0, d3.max(dados, d => d.consumo)])
-                                .range([innerHeight, 0]);
+                                const y = d3.scaleLinear()
+                                    .domain([0, d3.max(dados, d => d.consumo)])
+                                    .range([innerHeight, 0]);
 
-                            const line = d3.line()
-                                .x(d => x(d.tempo))
-                                .y(d => y(d.consumo));
+                                const line = d3.line()
+                                    .x(d => x(d.tempo))
+                                    .y(d => y(d.consumo));
 
-                            g.append("g")
-                                .attr("transform", `translate(0,${innerHeight})`)
-                                .call(d3.axisBottom(x));
+                                g.append("g")
+                                    .attr("transform", `translate(0,${innerHeight})`)
+                                    .call(d3.axisBottom(x));
 
-                            g.append("g")
-                                .call(d3.axisLeft(y));
+                                g.append("g")
+                                    .call(d3.axisLeft(y));
 
-                            g.append("path")
-                                .datum(dados)
-                                .attr("fill", "none")
-                                .attr("stroke", "steelblue")
-                                .attr("stroke-width", 2)
-                                .attr("d", line);
+                                g.append("path")
+                                    .datum(dados)
+                                    .attr("fill", "none")
+                                    .attr("stroke", "steelblue")
+                                    .attr("stroke-width", 2)
+                                    .attr("d", line);
                             });
                         });
                     </script>
@@ -101,54 +105,54 @@
                     <svg class="svg-grafico-agua" width="750px" height="350px"></svg>
                     <script>
                         document.addEventListener('DOMContentLoaded', () => {
-                        fetch('/dados-agua')
+                        fetch('/dados-agua', {credentials: 'include'})
                             .then(res => res.json())
                             .then(dados => {
-                            const svg = d3.select(".svg-grafico-agua");
-                            const width = parseInt(svg.style("width"));
-                            const height = parseInt(svg.style("height"));
-                            const margin = { top: 20, right: 30, bottom: 30, left: 40 };
-                            const innerWidth = width - margin.left - margin.right;
-                            const innerHeight = height - margin.top - margin.bottom;
+                                const svg = d3.select(".svg-grafico-agua");
+                                const width = parseInt(svg.style("width"));
+                                const height = parseInt(svg.style("height"));
+                                const margin = { top: 20, right: 30, bottom: 30, left: 40 };
+                                const innerWidth = width - margin.left - margin.right;
+                                const innerHeight = height - margin.top - margin.bottom;
 
-                            const g = svg.append("g")
-                                .attr("transform", `translate(${margin.left},${margin.top})`);
+                                const g = svg.append("g")
+                                    .attr("transform", `translate(${margin.left},${margin.top})`);
 
-                            // Exemplo de estrutura: [{ tempo: "2024-01", consumo: 150 }, ...]
-                            const parseTime = d3.timeParse("%Y-%m");
-                            dados.forEach(d => {
-                                d.tempo = parseTime(d.tempo);
-                                d.consumo = +d.consumo;
-                            });
+                                // Exemplo de estrutura: [{ tempo: "2024-01", consumo: 150 }, ...]
+                                const parseTime = d3.timeParse("%Y-%m");
+                                dados.forEach(d => {
+                                    d.tempo = parseTime(d.tempo);
+                                    d.consumo = +d.consumo;
+                                });
 
-                            const x = d3.scaleTime()
-                                .domain(d3.extent(dados, d => d.tempo))
-                                .range([0, innerWidth]);
+                                const x = d3.scaleTime()
+                                    .domain(d3.extent(dados, d => d.tempo))
+                                    .range([0, innerWidth]);
 
-                            const y = d3.scaleLinear()
-                                .domain([0, d3.max(dados, d => d.consumo)])
-                                .range([innerHeight, 0]);
+                                const y = d3.scaleLinear()
+                                    .domain([0, d3.max(dados, d => d.consumo)])
+                                    .range([innerHeight, 0]);
 
-                            const line = d3.line()
-                                .x(d => x(d.tempo))
-                                .y(d => y(d.consumo));
+                                const line = d3.line()
+                                    .x(d => x(d.tempo))
+                                    .y(d => y(d.consumo));
 
-                            g.append("g")
-                                .attr("transform", `translate(0,${innerHeight})`)
-                                .call(d3.axisBottom(x));
+                                g.append("g")
+                                    .attr("transform", `translate(0,${innerHeight})`)
+                                    .call(d3.axisBottom(x));
 
-                            g.append("g")
-                                .call(d3.axisLeft(y));
+                                g.append("g")
+                                    .call(d3.axisLeft(y));
 
-                            g.append("path")
-                                .datum(dados)
-                                .attr("fill", "none")
-                                .attr("stroke", "steelblue")
-                                .attr("stroke-width", 2)
-                                .attr("d", line);
+                                g.append("path")
+                                    .datum(dados)
+                                    .attr("fill", "none")
+                                    .attr("stroke", "steelblue")
+                                    .attr("stroke-width", 2)
+                                    .attr("d", line);
                             });
                         });
-                    </script>
+                </script>
                     <form action="selecionar-grafico-agua">
                         <p>Comparar com:</p>
                         
@@ -185,14 +189,14 @@
     <div id="meuModalAgua" class="modal">
         <div class="modal-conteudo">
             <h2>Adicionar conta de água</h2>
-            <form id="form-agua" class="form-nova-conta" action="">
+            <form id="form-agua" class="form-nova-conta" action="adicionar-conta-agua" method="POST">
                 <div>
                     <label for="tempo">Data: </label>
-                    <input id="seletor-mes-agua" type="month" name="tempo-agua" class="seletor-mes">
+                    <input id="seletor-mes-agua" type="month" name="mesAgua" class="seletor-mes">
                 </div>
                 <div>
                     <label for="consumo">Consumo: </label>
-                    <input type="text" name="consumo-agua">
+                    <input type="text" name="consumoAgua">
                 </div>
                 <div>
                     <button style="background-color: #2d2e47;" type="button" class="voltar-button" onclick="fecharModalAgua()">Voltar</button>
@@ -205,15 +209,15 @@
     <div id="meuModalEnergia" class="modal">
         <div class="modal-conteudo">
             <h2>Adicionar conta de energia</h2>
-            <form id="form-energia" class="form-nova-conta" action="">
+            <form id="form-energia" class="form-nova-conta" action="adicionar-conta-energia" method="POST">
                 <div>
                     <label for="tempo">Data: </label>
-                    <input id="seletor-mes-energia" type="month" name="tempo-energia" class="seletor-mes">
+                    <input id="seletor-mes-energia" type="month" name="mesEnergia" class="seletor-mes">
                     
                 </div>
                 <div>
                     <label for="consumo">Consumo: </label>
-                    <input type="text" name="consumo-energia">
+                    <input type="text" name="consumoEnergia">
                 </div>
                 <div>
                     <button style="background-color: #2d2e47;" type="button" class="voltar-button" onclick="fecharModalEnergia()">Voltar</button>
@@ -245,104 +249,6 @@
             const mes = String(date.getMonth() + 1).padStart(2, '0');
             return `${ano}-${mes}`;
         }
-    </script>
-
-    <script>
-        document.getElementById('form-energia').addEventListener('submit', function (e) {
-            e.preventDefault();
-
-            const tempoInput = document.querySelector('input[name="tempo-energia"]');
-            const consumoInput = document.querySelector('input[name="consumo-energia"]');
-
-            const tempo = tempoInput.value.trim();
-            const consumo = consumoInput.value.trim();
-
-            console.log("Mês:", tempo);
-            console.log("Consumo:", consumo);
-
-            if (!tempo || !consumo || isNaN(consumo)) {
-                alert('Preencha todos os campos corretamente.');
-                return;
-            }
-
-            fetch('/adicionar-energia', {
-                method: 'POST',
-                headers: {
-                'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ tempo: tempo, consumo: parseFloat(consumo) })
-            })
-            .then(res => res.json())
-            .then(res => {
-                alert('Dados salvos com sucesso!');
-                fecharModalEnergia();
-            })
-            .catch(err => {
-                alert('Erro ao salvar os dados.');
-                console.error(err);
-            });
-        });
-    </script>
-
-    <script>
-        document.getElementById('form-agua').addEventListener('submit', function (e) {
-            e.preventDefault();
-
-            const tempoInput = document.querySelector('input[name="tempo-agua"]');
-            const consumoInput = document.querySelector('input[name="consumo-agua"]');
-
-            const tempo = tempoInput.value.trim();
-            const consumo = consumoInput.value.trim();
-
-            console.log("Mês:", tempo);
-            console.log("Consumo:", consumo);
-
-            if (!tempo || !consumo || isNaN(consumo)) {
-                alert('Preencha todos os campos corretamente.');
-                return;
-            }
-
-            fetch('/adicionar-agua', {
-                method: 'POST',
-                headers: {
-                'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ tempo: tempo, consumo: parseFloat(consumo) })
-            })
-            .then(res => res.json())
-            .then(res => {
-                alert('Dados salvos com sucesso!');
-                fecharModalEnergia();
-            })
-            .catch(err => {
-                alert('Erro ao salvar os dados.');
-                console.error(err);
-            });
-        });
-    </script>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const inputMes = document.getElementById('seletor-mes-agua');
-
-            const hoje = new Date();
-            const cincoMesesAtras = new Date();
-            cincoMesesAtras.setMonth(hoje.getMonth() - 5);
-
-            inputMes.min = getMesAnoFormatado(cincoMesesAtras);
-            inputMes.max = getMesAnoFormatado(hoje);
-        });                       
-
-        document.addEventListener('DOMContentLoaded', function () {
-            const inputMes = document.getElementById('seletor-mes-energia');
-
-            const hoje = new Date();
-            const cincoMesesAtras = new Date();
-            cincoMesesAtras.setMonth(hoje.getMonth() - 5);
-
-            inputMes.min = getMesAnoFormatado(cincoMesesAtras);
-            inputMes.max = getMesAnoFormatado(hoje);
-        });
     </script>
 </body>
 

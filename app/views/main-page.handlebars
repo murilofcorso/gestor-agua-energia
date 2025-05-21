@@ -43,16 +43,14 @@
                                 const g = svg.append("g")
                                     .attr("transform", `translate(${margin.left},${margin.top})`);
 
-                                // Exemplo de estrutura: [{ tempo: "2024-01", consumo: 150 }, ...]
-                                const parseTime = d3.timeParse("%Y-%m");
                                 dados.forEach(d => {
-                                    d.tempo = parseTime(d.tempo);
                                     d.consumo = +d.consumo;
                                 });
 
-                                const x = d3.scaleTime()
-                                    .domain(d3.extent(dados, d => d.tempo))
-                                    .range([0, innerWidth]);
+                                const x = d3.scalePoint()
+                                    .domain(dados.map(d => d.tempo)) // usa os valores reais do banco, como "2024-01"
+                                    .range([0, innerWidth])
+                                    .padding(0.5);
 
                                 const y = d3.scaleLinear()
                                     .domain([0, d3.max(dados, d => d.consumo)])
@@ -119,16 +117,15 @@
                                 const g = svg.append("g")
                                     .attr("transform", `translate(${margin.left},${margin.top})`);
 
-                                // Exemplo de estrutura: [{ tempo: "2024-01", consumo: 150 }, ...]
-                                const parseTime = d3.timeParse("%Y-%m");
-                                dados.forEach(d => {
-                                    d.tempo = parseTime(d.tempo);
+                               dados.forEach(d => {
                                     d.consumo = +d.consumo;
                                 });
 
-                                const x = d3.scaleTime()
-                                    .domain(d3.extent(dados, d => d.tempo))
-                                    .range([0, innerWidth]);
+                                const x = d3.scalePoint()
+                                    .domain(dados.map(d => d.tempo)) // usa os valores reais do banco, como "2024-01"
+                                    .range([0, innerWidth])
+                                    .padding(0.5);
+
 
                                 const y = d3.scaleLinear()
                                     .domain([0, d3.max(dados, d => d.consumo)])
